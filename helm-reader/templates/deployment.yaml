@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: reader-container
-          image: us-central1-docker.pkg.dev/thesis-416800/uoc/reader:latest
+          image: us-central1-docker.pkg.dev/thesis-416800/uoc/reader:{{ .Values.tag }}
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
