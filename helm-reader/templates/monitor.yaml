@@ -10,3 +10,5 @@ spec:
   endpoints:
   - port: http-web
     path: /prometheus
+  targetLabels:
+    - app
