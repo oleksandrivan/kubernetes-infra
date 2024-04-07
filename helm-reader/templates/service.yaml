@@ -4,6 +4,7 @@ metadata:
   name: reader-svc
   labels:
     app: reader-app
+    application: reader
 spec:
   selector:
     app: reader-app
