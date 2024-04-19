@@ -14,10 +14,8 @@ spec:
     spec:
       containers:
         - name: order-management-container
-          # image: us-central1-docker.pkg.dev/thesis-416800/uoc/order-management-service:{{ .Values.tag }}
-          image: docker.io/library/order-management-service:{{ .Values.tag }}
-          # imagePullPolicy: Always
-          imagePullPolicy: Never
+          image: us-central1-docker.pkg.dev/thesis-416800/uoc/order-management-service:{{ .Values.tag }}
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           resources:
