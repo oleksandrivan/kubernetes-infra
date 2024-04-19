@@ -1,0 +1,4 @@
+apiVersion: v2
+name: expose-admin-services
+version: 1.0.0
+description: A Helm chart for my application

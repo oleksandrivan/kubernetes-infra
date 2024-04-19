@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: replica-exporter-svc
+  labels:
+    app: replica-exporter-app
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9104
+    protocol: TCP
+    name: http
+  selector:
+    app: replica-exporter-app

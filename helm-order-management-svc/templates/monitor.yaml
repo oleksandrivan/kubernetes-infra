@@ -1,0 +1,14 @@
+# apiVersion: monitoring.coreos.com/v1
+# kind: ServiceMonitor
+# metadata:
+#   name: order-management-monitor
+#   namespace: default
+# spec:
+#   selector:
+#     matchLabels:
+#       app: order-management-app
+#   endpoints:
+#   - port: http-web
+#     path: /prometheus
+#   targetLabels:
+#     - application

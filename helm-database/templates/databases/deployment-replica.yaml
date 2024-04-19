@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-replica
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-replica
+  template:
+    metadata:
+      labels:
+        app: mysql-replica
+    spec:
+      initContainers:
+        - name: init-mysql
+          image: mysql:8.0.36
+          command: 
+          - sh
+          - -c
+          - |
+            sleep 30
+            mysqldump -h mysql-source -u root -proot db > /docker-entrypoint-initdb.d/dump.sql
+            read -r CURRENT_LOG CURRENT_POS <<< $(mysql -h mysql-source -u root -proot -e "SHOW MASTER STATUS" | awk 'NR > 1 {print $1, $2}')
+            echo "CHANGE MASTER TO MASTER_HOST='mysql-source',MASTER_USER='replica_user',MASTER_PASSWORD='password',MASTER_LOG_FILE='$CURRENT_LOG',MASTER_LOG_POS=$CURRENT_POS; START SLAVE;" >> /docker-entrypoint-initdb.d/startup.sql
+            cat /docker-entrypoint-initdb.d/startup.sql
+          volumeMounts:
+            - name: mysql-dump
+              mountPath: /docker-entrypoint-initdb.d/
+      containers:
+        - name: mysql-replica
+          image: mysql:8.0.36
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: db
+            - name: MYSQL_USER
+              value: replica
+            - name: MYSQL_PASSWORD
+              value: replica
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-volume
+              mountPath: /etc/mysql/conf.d/mysql.conf.cnf
+              subPath: replica.cnf
+            - name: mysql-dump
+              mountPath: /docker-entrypoint-initdb.d/
+            - name: mysql-volume
+              mountPath: /docker-entrypoint-initdb.d/monitoringuser.sql
+              subPath: monitoringuser.sql
+      volumes:
+        - name: mysql-volume
+          configMap:
+            name: mysql-config
+        - name: mysql-dump
+          emptyDir: {}

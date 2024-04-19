@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+data:
+  primary.cnf: |
+    # Apply this config only on the primary.
+    [mysqld]
+    server-id = 1
+    log-bin
+  init.sql: |
+    CREATE TABLE `Customer` (
+    id INT NOT NULL,
+    `name` VARCHAR(255) NOT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+    );
+    CREATE TABLE `Address` (
+        id INT NOT NULL,
+        `street` VARCHAR(255) NOT NULL,
+        `city` VARCHAR(255) NOT NULL,
+        `state` VARCHAR(255) NOT NULL,
+        `postalCode` VARCHAR(255) NOT NULL,
+        `country` VARCHAR(255) NOT NULL,
+        PRIMARY KEY (id)
+    );
+    CREATE TABLE `Order` (
+        id VARCHAR(255) NOT NULL,
+        customerId INT NOT NULL,
+        `shippingAddress` INT NOT NULL,
+        `status` ENUM('CREATED', 'PREPARING', 'SHIPPED', 'DELIVERED', 'CANCELLED') NOT NULL DEFAULT 'CREATED',
+        `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        FOREIGN KEY (customerId) REFERENCES `Customer`(id),
+        FOREIGN KEY (`shippingAddress`) REFERENCES `Address`(`id`)
+    );
+    CREATE TABLE `OrderItem` (
+        `orderId` VARCHAR(255) NOT NULL,
+        `productId` VARCHAR(255) NOT NULL,
+        `quantity` INT NOT NULL,
+        PRIMARY KEY (`orderId`, `productId`),
+        FOREIGN KEY (`orderId`) REFERENCES `Order`(id)
+    );
+    INSERT INTO `Customer` (id, `name`, `email`) VALUES (1, 'John Doe', 'jonh.doe@example.com');
+    INSERT INTO `Address` (id, `street`, `city`, `state`, `postalCode`, `country`) VALUES (1, '123 Main St', 'Springfield', 'IL', '62701', 'USA');
+  usercreation.sql: |
+    CREATE USER 'replica_user'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
+    GRANT REPLICATION SLAVE ON *.* TO "replica_user"@"%";
+    FLUSH PRIVILEGES;
+  monitoringuser.sql: |
+    CREATE USER 'mysqld-exporter'@'%' IDENTIFIED WITH mysql_native_password BY '123456' WITH MAX_USER_CONNECTIONS 3;
+    GRANT PROCESS, REPLICATION CLIENT, REPLICATION SLAVE, SELECT ON *.* TO "mysqld-exporter"@"%";
+    FLUSH PRIVILEGES;
+  replica.cnf: |
+    # Apply this config only on replicas.
+    [mysqld]
+    server-id = 2

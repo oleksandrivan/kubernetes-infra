@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-management-dp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-management-app
+  template:
+    metadata:
+      labels:
+        app: order-management-app
+    spec:
+      containers:
+        - name: order-management-container
+          # image: us-central1-docker.pkg.dev/thesis-416800/uoc/order-management-service:{{ .Values.tag }}
+          image: docker.io/library/order-management-service:{{ .Values.tag }}
+          # imagePullPolicy: Always
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          env:
+            - name: DATABASE_URL
+              value: jdbc:mysql://mysql-source:3306/db
+            - name: DATABASE_USERNAME
+              value: source
+            - name: DATABASE_PASSWORD
+              value: source
+              
+      imagePullSecrets:
+        - name: regcred
