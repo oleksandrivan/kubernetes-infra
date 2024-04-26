@@ -26,6 +26,10 @@ spec:
               value: source
           ports:
             - containerPort: 3306
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           volumeMounts:
             - name: mysql-volume
               mountPath: /etc/mysql/conf.d/mysql.conf.cnf

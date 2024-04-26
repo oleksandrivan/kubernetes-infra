@@ -20,11 +20,11 @@ spec:
             - containerPort: 8080
           resources:
             limits:
-              memory: "512Mi"
-              cpu: "500m"
+              memory: "1Gi"
+              cpu: "1"
           env:
             - name: DATABASE_URL
-              value: jdbc:mysql://mysql-source:3306/db
+              value: r2dbc:mysql://mysql-source:3306/db
             - name: DATABASE_USERNAME
               value: source
             - name: DATABASE_PASSWORD
