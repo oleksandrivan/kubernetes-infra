@@ -21,7 +21,7 @@ spec:
           resources:
             limits:
               memory: "1Gi"
-              cpu: "1"
+              cpu: "500m"
           env:
             - name: DATABASE_URL
               value: r2dbc:mysql://mysql-replica:3306/db

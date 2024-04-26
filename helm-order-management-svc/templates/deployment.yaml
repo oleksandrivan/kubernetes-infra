@@ -21,7 +21,7 @@ spec:
           resources:
             limits:
               memory: "1Gi"
-              cpu: "1"
+              cpu: "750m"
           env:
             - name: DATABASE_URL
               value: r2dbc:mysql://mysql-source:3306/db
