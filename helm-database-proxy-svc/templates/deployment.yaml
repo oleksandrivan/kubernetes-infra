@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database-proxy-dp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database-proxy-app
+  template:
+    metadata:
+      labels:
+        app: database-proxy-app
+    spec:
+      containers:
+        - name: database-proxy-container
+          image: us-central1-docker.pkg.dev/thesis-416800/uoc/database-proxy:{{ .Values.tag }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          env:
+            - name: DATABASE_URL 
+              value: jdbc:mysql://mysql-replica:3306/db
+            - name: DATABASE_USERNAME
+              value: replica
+            - name: DATABASE_PASSWORD
+              value: replica
+            - name: REDIS_URI
+              value: redis://redis:6379
+            - name: BOOTSTRAP_SERVER
+              value: broker:9092
+              
+      imagePullSecrets:
+        - name: regcred

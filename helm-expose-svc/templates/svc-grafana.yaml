@@ -7,14 +7,13 @@ metadata:
 spec:
   ports:
   - name: http-web
-    port: 80
+    port: 3000
     protocol: TCP
     targetPort: 3000
-    nodePort: 31000
   selector:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/name: grafana
-  type: NodePort
+  type: LoadBalancer
 status:
   loadBalancer: {}
   

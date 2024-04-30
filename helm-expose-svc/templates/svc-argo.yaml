@@ -7,13 +7,12 @@ metadata:
 spec:
   ports:
   - name: http
-    port: 80
+    port: 8080
     protocol: TCP
     targetPort: 8080
-    nodePort: 31080
   selector:
     app.kubernetes.io/name: argocd-server
   sessionAffinity: None
-  type: NodePort
+  type: LoadBalancer
 status:
   loadBalancer: {}
