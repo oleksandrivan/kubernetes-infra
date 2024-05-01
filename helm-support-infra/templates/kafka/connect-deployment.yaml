@@ -12,6 +12,7 @@ spec:
       labels:
         app: connect
     spec:
+      hostname: connect
       containers:
       - name: connect
         image: us-central1-docker.pkg.dev/thesis-416800/uoc/mysql-kafka-connector:latest
@@ -53,4 +54,4 @@ spec:
         - name: CONNECT_PLUGIN_PATH
           value: "/usr/share/java,/usr/share/confluent-hub-components"
         - name: CONNECT_LOG4J_LOGGERS
-          value: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
+          value: org.apache.zookeeper=INFO,org.I0Itec.zkclient=INFO,org.reflections=INFO
