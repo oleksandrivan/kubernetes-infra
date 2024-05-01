@@ -32,7 +32,7 @@ spec:
             - name: REDIS_URI
               value: redis://redis:6379
             - name: BOOTSTRAP_SERVER
-              value: broker:9092
+              value: broker:29092
               
       imagePullSecrets:
         - name: regcred
