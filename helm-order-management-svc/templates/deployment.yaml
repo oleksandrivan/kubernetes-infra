@@ -29,6 +29,8 @@ spec:
               value: source
             - name: DATABASE_PASSWORD
               value: source
+            - name: DATABASE_PROXY_URL
+              value: http://database-proxy-svc:32003
               
       imagePullSecrets:
         - name: regcred

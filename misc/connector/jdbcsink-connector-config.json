@@ -1,0 +1,24 @@
+{
+  "name": "JdbcSinkConnector-Order",
+  "config": {
+    "name": "JdbcSinkConnector-Order",
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": 1,
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": true,
+    "errors.tolerance": "all",
+    "errors.log.enable": true,
+    "errors.log.include.messages": true,
+    "topics": "orders",
+    "connection.url": "jdbc:mysql://mysql-source:3306/db?allowPublicKeyRetrieval=true&useSSL=false",
+    "connection.user": "source",
+    "connection.password": "source",
+    "insert.mode": "UPSERT",
+    "table.name.format": "Order",
+    "db.timezone": "Europe/Madrid",
+    "pk.mode": "record_value",
+    "pk.fields": "id",
+    "dialect.name": "MySqlDatabaseDialect"
+  }
+}
