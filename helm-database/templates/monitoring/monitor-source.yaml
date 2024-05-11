@@ -3,6 +3,8 @@ kind: ServiceMonitor
 metadata:
   name: source-monitor
   namespace: default
+  labels:
+    release: prometheus
 spec:
   selector:
     matchLabels:

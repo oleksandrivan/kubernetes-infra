@@ -3,6 +3,8 @@ kind: ServiceMonitor
 metadata:
   name: order-management-monitor
   namespace: default
+  labels:
+    release: prometheus
 spec:
   selector:
     matchLabels:

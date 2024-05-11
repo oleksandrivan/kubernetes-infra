@@ -3,6 +3,8 @@ kind: ServiceMonitor
 metadata:
   name: database-proxy-monitor
   namespace: default
+  labels:
+    release: prometheus
 spec:
   selector:
     matchLabels:
