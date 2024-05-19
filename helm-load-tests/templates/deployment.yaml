@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-tests-dp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: load-tests-app
+  template:
+    metadata:
+      labels:
+        app: load-tests-app
+    spec:
+      containers:
+        - name: load-tests-container
+          image: us-central1-docker.pkg.dev/thesis-416800/uoc/load-tests:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8089
+          env:
+            - name: MANAGEMENT_HOST
+              value: http://order-management-svc:32001
+            - name: STATUS_HOST
+              value: http://order-status-svc:32002
+      imagePullSecrets:
+        - name: regcred
