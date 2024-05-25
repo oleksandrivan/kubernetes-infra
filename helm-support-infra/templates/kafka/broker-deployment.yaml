@@ -52,3 +52,9 @@ spec:
           value: '/tmp/kraft-combined-logs'
         - name: CLUSTER_ID
           value: 'MkU3OEVBNTcwNTJENDM2Qk'
+        command: ["/bin/sh", "-c"]
+        args: 
+        - |
+          /etc/confluent/docker/run &
+          /bin/kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic mysql-source-Order --partitions 1 --replication-factor 1 -config cleanup.policy=delete
+          sleep infinity
