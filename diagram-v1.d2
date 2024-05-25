@@ -1,0 +1,14 @@
+User: {shape: person}
+User2: {shape: person}
+
+User -> Order Management Service: gestiona pedidos
+User2 <- Order Status Service: consulta estado de pedido
+
+Replica Database <-> Source Database: Sincronizadas
+
+Order Management Service -> Source Database: escribe información de pedido
+
+Replica Database -> Order Status Service: lee información de pedido
+
+Source Database: {shape: cylinder}
+Replica Database: {shape: cylinder}
