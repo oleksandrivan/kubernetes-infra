@@ -15,9 +15,11 @@ Kafka: {shape: queue}
 Kafka Connect
 Redis: {shape: cylinder}
 
+Database Proxy Service -> Replica Database
+
 Order Management Service -> Database Proxy Service: escribe información de pedido
 Database Proxy Service -> Redis
-Database Proxy Service -> Kafka
+Database Proxy Service <-> Kafka
 Kafka <-> Kafka Connect
 Kafka Connect -> Source Database
 Kafka Connect <- Replica Database
